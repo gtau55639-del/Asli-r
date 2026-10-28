@@ -1,0 +1,15 @@
+name: Keep server awake
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping /api/health
+        env:
+          URL: ${{ vars.SERVER_URL }}
+        run: |
+          if [ -z "$URL" ]; then echo "SERVER_URL belum diatur, dilewati."; exit 0; fi
+          curl -fsS --max-time 60 "${URL%/}/api/health" || echo "Ping gagal (server mungkin sedang bangun)."
