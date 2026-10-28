@@ -2,7 +2,7 @@ services:
   - type: web
     name: botlaunch-ai
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm install --include=dev && npm run build
     startCommand: npm start
     healthCheckPath: /api/health
@@ -12,12 +12,12 @@ services:
       - key: MAX_UPLOAD_MB
         value: "50"
       - key: BOTLAUNCH_STORAGE
-        value: /var/data/botlaunch
+        value: /tmp/botlaunch
       - key: ADMIN_TOKEN
-        generateValue: true   # read it in the Render dashboard → Environment
+        generateValue: true
       - key: ENABLE_RUNNER
         value: "true"
-    disk:
-      name: botlaunch-data
-      mountPath: /var/data/botlaunch
-      sizeGB: 1
+      - key: MAX_RUNNING_BOTS
+        value: "1"
+      - key: BOT_MEMORY_MB
+        value: "256"
